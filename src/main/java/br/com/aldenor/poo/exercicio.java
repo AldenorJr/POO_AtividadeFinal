@@ -1,8 +1,10 @@
 package br.com.aldenor.poo;
 
+import br.com.aldenor.poo.dto.Contribuinte;
 import br.com.aldenor.poo.model.ContribuinteFisico;
 import br.com.aldenor.poo.model.ContribuinteJuridico;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class exercicio {
@@ -10,11 +12,11 @@ public class exercicio {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Numero de impostos para calcular.");
-
         int contribuintes = startContribuinte();
         int impostoTotal = 0;
-        while(contribuintes != 0) {
-            System.out.println("Contribuinte º" + contribuintes);
+        ArrayList<Contribuinte> listContribuintes = new ArrayList<>();
+        while(listContribuintes.size() < contribuintes) {
+            System.out.println("Contribuinte º" + (listContribuintes.size()+1));
             System.out.println("Pessoa física ou jurídica (f/j)?");
             char type = startType();
             System.out.println("Digite o nome:");
@@ -27,6 +29,7 @@ public class exercicio {
                 ContribuinteFisico contribuinteFisico = new ContribuinteFisico(nome, rendaAnual, saude);
                 System.out.println("Imposto de " + contribuinteFisico.getName() + ", terá que pagar: " + contribuinteFisico.gerarImposto());
                 System.out.println("");
+                listContribuintes.add(contribuinteFisico);
                 impostoTotal += contribuinteFisico.gerarImposto();
             }
             if(type == 'j') {
@@ -35,9 +38,12 @@ public class exercicio {
                 ContribuinteJuridico contribuinteJuridico = new ContribuinteJuridico(nome, rendaAnual, numeroFuncionario);
                 System.out.println("Imposto de " + contribuinteJuridico.getName() + ", terá que pagar: " + contribuinteJuridico.gerarImposto());
                 System.out.println("");
+                listContribuintes.add(contribuinteJuridico);
                 impostoTotal += contribuinteJuridico.gerarImposto();
             }
-            contribuintes--;
+        }
+        for(Contribuinte contribuinte : listContribuintes) {
+            System.out.println(contribuinte.getName() + " terá que pagar: " + contribuinte.gerarImposto());
         }
         System.out.println("");
         System.out.println("Total em impostos que deveram ser pagos, são: " + impostoTotal);
